@@ -23,7 +23,7 @@ const createSong = async (req, res) => {
 
 const findSongById = async (req, res) => {
     try {
-        const song = await Song.findByPk(req.params.id, {
+        const song = await Song.findByPk(req.params.songId, {
             include: [Album]
         });
         if (!song) {
@@ -37,7 +37,7 @@ const findSongById = async (req, res) => {
 
 const updateSong = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.params.songId;
         const [updated] = await Song.update(req.body, {
             where: { id: id }
         });
@@ -53,7 +53,7 @@ const updateSong = async (req, res) => {
 
 const deleteSong = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.params.songId;
         const deleted = await Song.destroy({
             where: { id: id }
         });

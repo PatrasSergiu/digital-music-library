@@ -1,4 +1,5 @@
 const Album = require('../models/album');
+const Song = require('../models/song');
 
 const findAllAlbums = async (req, res) => {
     try {
@@ -14,6 +15,21 @@ const findAllAlbums = async (req, res) => {
     }
 };
 
+const findAllSongsByAlbum = async (req, res) => {
+    try {
+        const songs = await Song.findAll({
+            where: { albumId: req.params.albumId }
+        });
+        if (songs.length > 0) {
+            res.json(songs);
+        } else {
+            res.status(404).send('No songs found for this album');
+        }
+    } catch (error) {
+        res.status(500).send(`Error retrieving songs: ${error.message}`);
+    }
+}
+
 const createAlbum = async (req, res) => {
     try {
         const newAlbum = await Album.create(req.body);
@@ -25,7 +41,7 @@ const createAlbum = async (req, res) => {
 
 const findAlbumById = async (req, res) => {
     try {
-        const album = await Album.findByPk(req.params.id, {
+        const album = await Album.findByPk(req.params.albumId, {
             include: ['artist']
         });
         if (!album) {
@@ -39,7 +55,7 @@ const findAlbumById = async (req, res) => {
 
 const updateAlbum = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.params.albumId;
         const [updated] = await Album.update(req.body, {
             where: { id: id }
         });
@@ -55,7 +71,7 @@ const updateAlbum = async (req, res) => {
 
 const deleteAlbum = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.params.albumId;
         const deleted = await Album.destroy({
             where: { id: id }
         });
@@ -70,6 +86,7 @@ const deleteAlbum = async (req, res) => {
 
 module.exports = {
     findAllAlbums,
+    findAllSongsByAlbum,
     findAlbumById,
     createAlbum,
     updateAlbum,

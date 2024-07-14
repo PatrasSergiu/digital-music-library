@@ -1,4 +1,5 @@
 const Artist = require('../models/artist');
+const Album = require('../models/album');
 
 const findAllArtists = async (req, res) => {
     try {
@@ -6,6 +7,22 @@ const findAllArtists = async (req, res) => {
         res.json(artists);
     } catch (error) {
         res.status(500).send(error.message);
+    }
+};
+
+const findAllAlbumsByArtist = async (req, res) => {
+    try {
+        const artistId = req.params.artistId;
+        const albums = await Album.findAll({
+            where: { artistId: artistId }
+        });
+        if(albums.length > 0) {
+            res.json(albums);
+        } else {
+            res.status(404).send('No albums found for the specified artist.');
+        }
+    } catch (error) {
+        res.status(500).send(`Error retrieving albums: ${error.message}`);
     }
 };
 
@@ -20,7 +37,7 @@ const createArtist = async (req, res) => {
 
 const findArtistById = async (req, res) => {
     try {
-        const artist = await Artist.findByPk(req.params.id);
+        const artist = await Artist.findByPk(req.params.artistId);
         if (!artist) {
             return res.status(404).send('Artist not found');
         }
@@ -32,7 +49,7 @@ const findArtistById = async (req, res) => {
 
 const updateArtist = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.params.artistId;
         const [updated] = await Artist.update(req.body, {
             where: { id: id }
         });
@@ -48,7 +65,7 @@ const updateArtist = async (req, res) => {
 
 const deleteArtist = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.params.artistId;
         const deleted = await Artist.destroy({
             where: { id: id }
         });
@@ -63,6 +80,7 @@ const deleteArtist = async (req, res) => {
 
 module.exports = {
     findAllArtists,
+    findAllAlbumsByArtist,
     findArtistById,
     createArtist,
     updateArtist,
