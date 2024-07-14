@@ -49,7 +49,7 @@ const findArtistById = async (req, res) => {
 
 const updateArtist = async (req, res) => {
     try {
-        const { id } = req.params.artistId;
+        const id = req.params.artistId;
         const [updated] = await Artist.update(req.body, {
             where: { id: id }
         });
@@ -65,7 +65,7 @@ const updateArtist = async (req, res) => {
 
 const deleteArtist = async (req, res) => {
     try {
-        const { id } = req.params.artistId;
+        const id = req.params.artistId;
         const deleted = await Artist.destroy({
             where: { id: id }
         });

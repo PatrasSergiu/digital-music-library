@@ -1,26 +1,10 @@
-const express = require('express');
-const mongoose = require('mongoose');
 const { sequelize } = require('./config/database');
+const app = require('./app');
 const fs = require('fs');
 const path = require('path');
-
-const artistRoutes = require('./routes/artist.route');
-const albumRoutes = require('./routes/album.route');
-const songRoutes = require('./routes/song.route');
-
 const Artist = require('./models/artist');
 const Album = require('./models/album');
 const Song = require('./models/song');
-
-const app = express();
-app.use(express.json());
-app.use('/api/artists', artistRoutes);
-app.use('/api/albums', albumRoutes);
-app.use('/api/songs', songRoutes);
-
-app.get('/', (req, res) => {
-    res.send("Hello from Node API dev");
-});
 
 const PORT = process.env.PORT || 3000;
 
