@@ -4,7 +4,7 @@ const Album = require('./album');
 const Song = sequelize.define('song', {
     id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
     title: { type: Sequelize.STRING, allowNull: false },
-    length: { type: Sequelize.STRING }
+    length: { type: Sequelize.STRING, allowNull: false }
 });
 
 Song.belongsTo(Album, { foreignKey: 'albumId',  onDelete: 'CASCADE' });

@@ -8,6 +8,6 @@ const Album = sequelize.define('album', {
 });
 
 Album.belongsTo(Artist, { foreignKey: 'artistId', onDelete: 'CASCADE'  });
-Artist.hasMany(Album, { foreignKey: 'artistId' });
+Artist.hasMany(Album, { foreignKey: 'artistId'  });
 
 module.exports = Album;

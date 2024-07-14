@@ -55,7 +55,7 @@ const findAlbumById = async (req, res) => {
 
 const updateAlbum = async (req, res) => {
     try {
-        const { id } = req.params.albumId;
+        const id = req.params.albumId;
         const [updated] = await Album.update(req.body, {
             where: { id: id }
         });
@@ -71,7 +71,7 @@ const updateAlbum = async (req, res) => {
 
 const deleteAlbum = async (req, res) => {
     try {
-        const { id } = req.params.albumId;
+        const id = req.params.albumId;
         const deleted = await Album.destroy({
             where: { id: id }
         });
