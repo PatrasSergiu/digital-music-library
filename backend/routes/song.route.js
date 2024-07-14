@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.get('/', findAllSongs);
 router.post('/', createSong);
-router.get('/:id', findSongById);
-router.put('/:id', updateSong);
-router.delete('/:id', deleteSong);
+router.get('/:songId', findSongById);
+router.put('/:songId', updateSong);
+router.delete('/:songId', deleteSong);
 
 module.exports = router;
