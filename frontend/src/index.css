@@ -1,5 +1,12 @@
 body {
   margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: hsla(0, 0%, 0%, 1);
+  background: linear-gradient(0deg, hsla(0, 0%, 0%, 1) 0%, hsla(0, 0%, 11%, 1) 63%, hsla(0, 0%, 22%, 1) 100%);
+  background: -moz-linear-gradient(0deg, hsla(0, 0%, 0%, 1) 0%, hsla(0, 0%, 11%, 1) 63%, hsla(0, 0%, 22%, 1) 100%);
+  background: -webkit-linear-gradient(0deg, hsla(0, 0%, 0%, 1) 0%, hsla(0, 0%, 11%, 1) 63%, hsla(0, 0%, 22%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient(startColorstr="#000000", endColorstr="#1D1D1D", GradientType=1);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
