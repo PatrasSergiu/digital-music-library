@@ -1,25 +1,28 @@
 import React from 'react';
-import Grid from '@mui/material/Grid';
 import AlbumCard from './AlbumCard';
+import { Box } from '@mui/material';
 
-function AlbumGrid({ albums, onAlbumSelect, onAddAlbum }) {
+function AlbumGrid({ albums, onAlbumSelect, onAddAlbum, onDelete, onEdit }) {
   return (
-    <Grid container spacing={1}>
-      {/* The add new album */}
-      <Grid item xs={12} sm={6} md={5} lg={2}>
-        <AlbumCard 
-          album={{ title: '', coverUrl: "/images/NewAlbum.jpg" }} 
-          onSelect={onAddAlbum}
-          isNew={true}
-        />
-      </Grid>
-      {/* Edit existing albums */}
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', gap: '26px', padding: '8px' }}>
+      {/* Add new album card */}
+      <AlbumCard 
+        album={{ title: '', coverUrl: "/images/NewAlbum.jpg" }}
+        onSelect={onAddAlbum}
+        isNew={true}
+      />
+
+      {/* Existing albums */}
       {albums.map(album => (
-        <Grid key={album.id} item xs={12} sm={6} md={5} lg={2}>
-          <AlbumCard album={{title: album.title, artist: album.artist.name, artistId: album.artistId, coverUrl: "/images/AlbumCover.jpg"}} onSelect={() => onAlbumSelect(album)} />
-        </Grid>
+        <AlbumCard
+          key={album.id}
+          album={{ title: album.title, artist: album.artist.name, artistId: album.artistId, coverUrl: "/images/AlbumCover.jpg" }}
+          onSelect={() => onAlbumSelect(album)}
+          onDelete={() => onDelete(album)}
+          onEdit={() => onEdit(album)}
+        />
       ))}
-    </Grid>
+    </Box>
   );
 }
 

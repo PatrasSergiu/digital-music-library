@@ -1,23 +1,19 @@
 import React from 'react';
 import { Card, CardActionArea, CardMedia, Typography, Box, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit'
+import EditIcon from '@mui/icons-material/Edit';
 
-function AlbumCard({ album, isNew, onSelect, onEdit, onDelete }) {
-    const { title, artist, coverUrl } = album;
-
-    const handleSelect = () => {
-        onSelect(album);
-    };
+function ArtistCard({ artist, onSelect, isNew, onDelete, onEdit }) {
+    const { name, coverUrl } = artist;
 
     return (
         <Box sx={{ maxWidth: 400, m: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
             <Card sx={{ width: '100%', backgroundColor: 'transparent', boxShadow: 'none', borderRadius: '16px', position: 'relative' }}>
-                <CardActionArea onClick={handleSelect}>
+                <CardActionArea onClick={() => onSelect(artist)}>
                     <CardMedia
                         component="img"
-                        image={coverUrl || '/images/NewAlbum.jpg'}
-                        alt={`Cover for ${title}`}
+                        image={coverUrl || '/images/DefaultArtist.jpg'}
+                        alt={`Image of ${name}`}
                         sx={{ height: 220, borderRadius: '16px' }}
                     />
                 </CardActionArea>
@@ -39,7 +35,7 @@ function AlbumCard({ album, isNew, onSelect, onEdit, onDelete }) {
                             }}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                onEdit(artist);
+                                onSelect(artist);
                             }}
                         >
                             <EditIcon />
@@ -68,16 +64,13 @@ function AlbumCard({ album, isNew, onSelect, onEdit, onDelete }) {
                     </>
                 )}
             </Card>
-            <Box sx={{ textAlign: 'left', width: '100%' }}>
+            <Box sx={{ textAlign: 'center', width: '100%' }}>
                 <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold', mt: 0.5 }}>
-                    {title}
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'gray', mt: 0.5 }}>
-                    {artist}
+                    {name}
                 </Typography>
             </Box>
         </Box>
     );
 }
 
-export default AlbumCard;
+export default ArtistCard;
