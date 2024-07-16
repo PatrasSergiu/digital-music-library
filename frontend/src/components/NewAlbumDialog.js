@@ -64,7 +64,7 @@ function NewAlbumDialog({ open, onClose, onAdd, artists }) {
                 
                 const createdAlbum = await addNewAlbum(albumToCreate);
                 console.log("Created: ", createdAlbum);
-                onAdd(createdAlbum);
+                onAdd(createdAlbum, selectedArtist);
             })(),
             {
                 pending: 'Adding album...',

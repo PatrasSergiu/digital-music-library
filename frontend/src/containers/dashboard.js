@@ -119,12 +119,21 @@ function Dashboard() {
     setIsAddArtistDialogOpen(false);
   }
 
-  const handleNewAlbumAdded = (albumData) => {
+  const handleNewAlbumAdded = (albumData, artistData) => {
     const updatedAlbums = [...albums, albumData];
     setAlbums(updatedAlbums);
     setFilteredAlbums(updatedAlbums);
+
+    const artistExists = artists.some(artist => artist.id === artistData.id);
+    if (!artistExists) {
+        const updatedArtists = [...artists, artistData];
+        setArtists(updatedArtists);
+        setFilteredArtists(updatedArtists);
+    }
+
     handleCloseAddArtistDialog();
-  };
+    setIsAddAlbumDialogOpen(false);
+};
 
   const handleNewArtistAdded = (artistData) => {
     const updatedArtists = [...artists, artistData];

@@ -4,10 +4,11 @@ import './App.css';
 import Dashboard from './containers/dashboard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Box } from '@mui/material';
 
 function App() {
   return (
-    <>
+    <Box sx={{scrollbarColor: 'black gray'}}>
       <Router>
         <div className="App">
           <Routes>
@@ -28,7 +29,7 @@ function App() {
         theme="dark" 
         style={{ color: 'white' }}
       />
-    </>
+    </Box>
 
   );
 }
