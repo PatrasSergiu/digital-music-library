@@ -33,7 +33,7 @@ To get a local copy up and running follow these simple steps.
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/PatrasSergiu/digital-music-library.git
-   cd Project-Name
+   cd digital-music-library
 
 2. **Set Up DB**
    - Create a new database in MySQL. You can then use the root user or create a new one.
@@ -48,7 +48,7 @@ By default, the server runs on localhost:3000 and the client on localhost:3001
 Open both projects in the IDE of your choice. Make sure to run the server first.
 
 - Backend: npm run dev
-- Frontend: bash npm start
+- Frontend: npm start
 
 For easier testing of the application, we reset the database to the original contents from the data.json file. 
 This behaviour can be changed by altering the sequelize sync to force: false
