@@ -133,7 +133,7 @@ function SideMenu({ album, songs, onSave, onDelete, onDeleteAlbum, onClose, isOp
                 }
             }}
         >
-            <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
+            <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2, maxWidth: '90%' }}>
                 <Card sx={{ width: '100%', display: 'flex', justifyContent: 'center', backgroundColor: 'transparent', boxShadow: 'none' }}>
                     <CardMedia
                         component="img"
