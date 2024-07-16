@@ -11,7 +11,7 @@
 - [Contact](#contact)
 
 ## About the Project
-The Music Collection Web App is a dynamic web application that allows users to manage their music collection efficiently. Users can add, edit, and delete albums and artists, view detailed information about their music, and much more.
+The Music Collection Web App is a dynamic web application that allows users to manage their music collection. Users can add, edit, and delete artist and albums, open a detailed view detailed view about their favourite albums and more.
 
 ### Built With
 - **Frontend**: React, Material-UI
@@ -32,7 +32,7 @@ To get a local copy up and running follow these simple steps.
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/PatrasSergiu/digital-music-library.git
    cd Project-Name
 
 2. **Set Up DB**
