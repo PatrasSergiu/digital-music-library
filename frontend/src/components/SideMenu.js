@@ -1,20 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Drawer, List, ListItem, ListItemIcon, ListItemText,
-    IconButton, Typography, TextField, Box
+    IconButton, Typography, TextField, Box, Button
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
-import ConfirmationDialog from './ConfirmationDialog';  // Ensure this import is correct
+import ConfirmationDialog from './ConfirmationDialog';
+import { toast } from 'react-toastify';
+import { deleteSong } from '../controllers/songController';
+import { deleteAlbum } from '../controllers/albumController';
 
-function SideMenu({ album, songs, onSave, onDelete, onClose, isOpen }) {
+function SideMenu({ album, songs, onSave, onDelete, onDeleteAlbum, onClose, isOpen }) {
     const [editableSongs, setEditableSongs] = useState(songs);
     const [editMode, setEditMode] = useState({});
-    const [confirmOpen, setConfirmOpen] = useState(false);
+    const [confirmSongDeleteOpen, setConfirmSongDeleteOpen] = useState(false);
+    const [confirmAlbumDeleteOpen, setConfirmAlbumDeleteOpen] = useState(false);
     const [songToDelete, setSongToDelete] = useState(null);
+
+    useEffect(() => {
+        setEditableSongs(songs);
+    }, [songs])
 
     const toggleEdit = (songId, song) => {
         setEditMode({ [songId]: true });
@@ -28,36 +36,85 @@ function SideMenu({ album, songs, onSave, onDelete, onClose, isOpen }) {
         setEditableSongs(updatedSongs);
     };
 
+    const validateDuration = (duration) => {
+        return /^[0-5]?[0-9]:[0-5][0-9]$/.test(duration);
+    };
+
     const handleSaveSong = (songId) => {
-        onSave(songId, editableSongs.find(song => song.id === songId));
+        const foundSong = editableSongs.find(song => song.id === songId);
+        if (!validateDuration(foundSong.length)) {
+            toast.error("Invalid duration format. Please use MM:SS.");
+            return;
+        }
+        if (foundSong.title.length < 1) {
+            toast.error("Name of the song must not be empty.");
+            return;
+        }
+        onSave(songId, foundSong);
         setEditMode({ [songId]: false });
     };
 
     const handleAddSong = () => {
-        const newSongId = Date.now();
-        const newSong = { id: newSongId, title: '', artist: album.artist.name, artistId: album.artistId, duration: '', isEditing: false };
+        const newSongId = -1;
+        const newSong = { id: newSongId, title: '', artist: album.artist.name, artistId: album.artistId, albumId: album.id, length: '', isEditing: false };
         setEditableSongs([...editableSongs, newSong]);
         toggleEdit(newSongId, newSong);
     };
 
     const handleDeleteClick = (id) => {
         setSongToDelete(id);
-        setConfirmOpen(true);
+        setConfirmSongDeleteOpen(true);
     };
 
     const handleDeleteConfirmed = () => {
-        onDelete(songToDelete);
-        setEditableSongs(editableSongs.filter(song => song.id !== songToDelete));
-        setConfirmOpen(false);
-        setSongToDelete(null);
+        toast.promise(
+            deleteSong(songToDelete),
+            {
+                pending: 'Deleting song...',
+                success: 'Song deleted successfully!',
+                error: 'Failed to delete song!'
+            }
+        ).then(() => {
+            setEditableSongs(prevSongs => prevSongs.filter(song => song.id !== songToDelete));
+            onDelete(songToDelete);
+        }).catch((error) => {
+            console.error("Deletion failed:", error);
+        }).finally(() => {
+            setConfirmSongDeleteOpen(false);
+            setSongToDelete(null);
+        });
     };
 
     const handleCancelEdit = (songId) => {
         if (!songs.some(s => s.id === songId)) {
-            // If the song was being added and not saved
             setEditableSongs(editableSongs.filter(song => song.id !== songId));
         }
         setEditMode({ [songId]: false });
+        setConfirmSongDeleteOpen(false);
+    };
+
+    const handleDeleteAlbum = () => {
+        setConfirmAlbumDeleteOpen(true);
+    };
+
+    const handleConfirmDeleteAlbum = () => {
+        toast.promise(
+            deleteAlbum(album.id),
+            {
+                pending: 'Deleting album...',
+                success: 'Album deleted successfully!',
+                error: 'Failed to delete album!'
+            }
+        ).then(() => {
+            onDeleteAlbum();
+        }).catch((error) => {
+            console.error("Deletion failed:", error);
+        });
+    };
+    const handleCancelDelete = () => {
+        setConfirmSongDeleteOpen(false);
+        setConfirmAlbumDeleteOpen(false);
+        setSongToDelete(null);
     };
 
     return (
@@ -77,11 +134,45 @@ function SideMenu({ album, songs, onSave, onDelete, onClose, isOpen }) {
             }}
         >
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 2 }}>
-                <Typography variant="h6">{album.title} - {album.artist.name}</Typography>
+
+                <Box sx = {{display: 'flex', alignItems: 'center'}}>
+                    <Typography variant="h6">{album.title}</Typography>
+                    <Button
+                        onClick={handleDeleteAlbum}
+                        sx={{
+                            ml: 3,
+                            color: '#ff1744',
+                            '&:hover': {
+                                backgroundColor: 'transparent',
+                                color: '#d50000'
+                            },
+                            textTransform: 'none'
+                        }}
+                    >
+                        <DeleteIcon sx={{ marginRight: 1, fontSize: '1rem' }} />
+                        <Typography variant="button">Delete Album</Typography>
+                    </Button>
+                </Box>
                 <IconButton onClick={onClose}>
                     <CloseIcon sx={{ color: 'white' }} />
                 </IconButton>
             </Box>
+            <Typography
+                sx={{
+                    color: 'white',
+                    fontFamily: 'Roboto',
+                    fontSize: '1rem',
+                    lineHeight: 1.5,
+                    fontWeight: 400,
+                    mt: 2,
+                    mb: 2,
+                    maxWidth: '95%',
+                    mx: 'auto',
+                    textAlign: 'justify'
+                }}
+            >
+                {album.description}
+            </Typography>
             <List>
                 {editableSongs.map(song => (
                     <ListItem key={song.id} sx={{ borderBottom: '1px solid #444', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -95,6 +186,7 @@ function SideMenu({ album, songs, onSave, onDelete, onClose, isOpen }) {
                         ) : (
                             <NormalRow
                                 song={song}
+                                artist={album.artist.name}
                                 toggleEdit={() => toggleEdit(song.id, song)}
                                 handleDeleteClick={handleDeleteClick}
                             />
@@ -109,13 +201,20 @@ function SideMenu({ album, songs, onSave, onDelete, onClose, isOpen }) {
                 </ListItem>
             </List>
             <ConfirmationDialog
-                open={confirmOpen}
+                open={confirmSongDeleteOpen}
                 onClose={() => handleCancelEdit(songToDelete)}
                 onConfirm={handleDeleteConfirmed}
                 title="Confirm Deletion"
             >
                 Are you sure you want to delete this song?
             </ConfirmationDialog>
+            <ConfirmationDialog
+                open={confirmAlbumDeleteOpen}
+                onClose={handleCancelDelete}
+                onConfirm={handleConfirmDeleteAlbum}
+                title="Confirm Album Deletion"
+                children="Are you sure? Deleting the album will also delete all the songs from it."
+            />
         </Drawer>
     );
 }
@@ -130,8 +229,8 @@ function EditingRow({ song, handleInputChange, handleSaveSong, handleCancelEdit 
                 sx={{ flex: 1, marginRight: 1, '& .MuiInputBase-input': { color: 'white' } }}
             />
             <TextField
-                value={song.duration}
-                onChange={(e) => handleInputChange(song.id, 'duration', e.target.value)}
+                value={song.length}
+                onChange={(e) => handleInputChange(song.id, 'length', e.target.value)}
                 size="small"
                 sx={{ width: '100px', '& .MuiInputBase-input': { color: 'white' } }}
             />
@@ -145,15 +244,15 @@ function EditingRow({ song, handleInputChange, handleSaveSong, handleCancelEdit 
     );
 }
 
-function NormalRow({ song, toggleEdit, handleDeleteClick }) {
+function NormalRow({ song, toggleEdit, handleDeleteClick, artist }) {
     return (
         <>
             <ListItemText
                 primary={<Typography sx={{ color: 'white' }}>{song.title}</Typography>}
-                secondary={<Typography sx={{ color: 'gray' }}>{song.artist}</Typography>}
+                secondary={<Typography sx={{ color: 'gray' }}>{artist}</Typography>}
                 sx={{ flex: '1 1 auto', minWidth: 0, mr: 2, color: 'white' }}
             />
-            <Typography sx={{ width: '100px', textAlign: 'right', color: 'white' }}>{song.duration}</Typography>
+            <Typography sx={{ width: '100px', textAlign: 'right', color: 'white' }}>{song.length}</Typography>
             <IconButton onClick={() => toggleEdit(song.id)}>
                 <EditIcon sx={{ color: 'white' }} />
             </IconButton>

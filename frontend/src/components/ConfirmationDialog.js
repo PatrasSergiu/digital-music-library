@@ -16,7 +16,7 @@ const ConfirmationDialog = ({ open, onClose, onConfirm, title, children }) => {
           {children}
         </DialogContentText>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{justifyContent: 'space-between'}}>
         <Button onClick={onClose} color="primary" sx={{ color: 'white' }}>
           Cancel
         </Button>
