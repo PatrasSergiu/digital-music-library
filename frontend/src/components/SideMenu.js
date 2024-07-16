@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
     Drawer, List, ListItem, ListItemIcon, ListItemText,
-    IconButton, Typography, TextField, Box, Button
+    IconButton, Typography, TextField, Box, Button, Card, CardMedia, CardContent
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import EditIcon from '@mui/icons-material/Edit';
@@ -133,46 +133,18 @@ function SideMenu({ album, songs, onSave, onDelete, onDeleteAlbum, onClose, isOp
                 }
             }}
         >
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 2 }}>
-
-                <Box sx = {{display: 'flex', alignItems: 'center'}}>
-                    <Typography variant="h6">{album.title}</Typography>
-                    <Button
-                        onClick={handleDeleteAlbum}
-                        sx={{
-                            ml: 3,
-                            color: '#ff1744',
-                            '&:hover': {
-                                backgroundColor: 'transparent',
-                                color: '#d50000'
-                            },
-                            textTransform: 'none'
-                        }}
-                    >
-                        <DeleteIcon sx={{ marginRight: 1, fontSize: '1rem' }} />
-                        <Typography variant="button">Delete Album</Typography>
-                    </Button>
-                </Box>
-                <IconButton onClick={onClose}>
-                    <CloseIcon sx={{ color: 'white' }} />
-                </IconButton>
+            <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
+                <Card sx={{ width: '100%', display: 'flex', justifyContent: 'center', backgroundColor: 'transparent', boxShadow: 'none' }}>
+                    <CardMedia
+                        component="img"
+                        image={album.coverUrl || '/images/AlbumCover.jpg'}
+                        alt="Album cover"
+                        sx={{ width: 200, height: 200, borderRadius: '80%', fontSize: 16 }}
+                    />  
+                </Card>
+                <Typography variant="h6" sx={{ mt: 1, color: 'white', fontSize: 40 }}>{album.title}</Typography>
+                <Typography variant="body2" sx={{ color: 'gray', textAlign: 'center' }}>{album.description}</Typography>
             </Box>
-            <Typography
-                sx={{
-                    color: 'white',
-                    fontFamily: 'Roboto',
-                    fontSize: '1rem',
-                    lineHeight: 1.5,
-                    fontWeight: 400,
-                    mt: 2,
-                    mb: 2,
-                    maxWidth: '95%',
-                    mx: 'auto',
-                    textAlign: 'justify'
-                }}
-            >
-                {album.description}
-            </Typography>
             <List>
                 {editableSongs.map(song => (
                     <ListItem key={song.id} sx={{ borderBottom: '1px solid #444', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

@@ -276,7 +276,7 @@ function Dashboard() {
   return (
     <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Typography variant="h4" component="h1" gutterBottom sx={{ flexGrow: 1, color: 'white', textAlign: 'left', marginLeft: 2 }}>
+        <Typography variant="h4" component="h1" gutterBottom sx={{ flexGrow: 1, color: 'white', textAlign: 'left', marginLeft: 2, fontWeight: 'bold' }}>
           My Albums
         </Typography>
         <Autocomplete
@@ -328,7 +328,7 @@ function Dashboard() {
       </Box>
       <AlbumGrid albums={filteredAlbums} onAlbumSelect={handleAlbumSelect} onAddAlbum={handleOpenAddAlbumDialog} onDelete={handleAlbumDelete} onEdit={handleAlbumEdit} />
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Typography variant="h4" component="h1" gutterBottom sx={{ flexGrow: 1, color: 'white', textAlign: 'left', marginLeft: 2 }}>
+        <Typography variant="h4" component="h1" gutterBottom sx={{ flexGrow: 1, color: 'white', textAlign: 'left', marginLeft: 2, fontWeight: 'bold' }}>
           My Artists
         </Typography>
         <Autocomplete
