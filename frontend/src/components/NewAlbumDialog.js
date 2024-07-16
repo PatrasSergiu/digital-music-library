@@ -39,23 +39,30 @@ function NewAlbumDialog({ open, onClose, onAdd, artists }) {
     
 
     const handleAdd = async () => {
+        let selectedArtist;
+        if(newAlbumData.artist === ""){
+            toast.error("Please select an artist!");
+            return;
+        } 
+        //new artist
+        if (newAlbumData.artist === "new") {
+            if(newAlbumData.newArtist === ""){
+                toast.error("Artist name cannot be empty!");
+                return;
+            }
+            selectedArtist = artists.find(artist => artist.name === newAlbumData.newArtist);
+            const newArtist = await addNewArtist({ name: newAlbumData.newArtist });
+            selectedArtist = newArtist; 
+        }
+        else {
+            if(newAlbumData.title === ""){
+                toast.error("Album name cannot be empty!");
+                return;
+            }
+            selectedArtist = artists.find(artist => artist.name === newAlbumData.artist);
+        }
         toast.promise(
             (async () => {
-                let selectedArtist; 
-                //new artist
-                if (newAlbumData.artist === "new") {
-                    if(newAlbumData.newArtist === ""){
-                        toast.error("Artist name cannot be empty!");
-                        return;
-                    }
-                    selectedArtist = artists.find(artist => artist.name === newAlbumData.newArtist);
-                    const newArtist = await addNewArtist({ name: newAlbumData.newArtist });
-                    selectedArtist = newArtist; 
-                }
-                else {
-                    selectedArtist = artists.find(artist => artist.name === newAlbumData.artist);
-                }
-                    
                 const albumToCreate = {
                     title: newAlbumData.title,
                     description: newAlbumData.description,
