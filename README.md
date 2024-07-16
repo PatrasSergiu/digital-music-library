@@ -50,6 +50,9 @@ Open both projects in the IDE of your choice. Make sure to run the server first.
 - Backend: npm run dev
 - Frontend: bash npm start
 
+For easier testing of the application, we reset the database to the original contents from the data.json file. 
+This behaviour can be changed by altering the sequelize sync to force: false
+
 ### Running Tests
 
 Open a terminat in the back end project and run
