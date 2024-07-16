@@ -10,11 +10,11 @@ const PORT = process.env.PORT || 3000;
 
 //during development we used force: true to drop the schemas and create new ones each time the server is restarted
 //once we are done with testing we remove force: true and comment the importData function after running it once, to prevent duplicate data.
-sequelize.sync({ force: false })
-//sequelize.sync({ force: true})
+//sequelize.sync({ force: false })
+sequelize.sync({ force: true})
     .then(async () => {
         console.log("Database synced");
-        //await importData();
+        await importData();
         app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
     })
     .catch(error => {
